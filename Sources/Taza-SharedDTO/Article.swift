@@ -6,7 +6,7 @@ public struct Article: Codable, Identifiable {
     public let content: String
     public let author: String
     public let publishedDate: Date
-    public let sourceURL: URL
+    public let sourceURL: URL?
     public let addedDate: Date
     
     public enum CodingKeys: String, CodingKey {
@@ -23,7 +23,7 @@ public struct Article: Codable, Identifiable {
         self.content = try container.decode(String.self, forKey: .content)
         self.author = try container.decode(String.self, forKey: .author)
         self.publishedDate = try container.decode(Date.self, forKey: .publishedDate)
-        self.sourceURL = try container.decode(URL.self, forKey: .sourceURL)
+        self.sourceURL = try container.decodeIfPresent(URL.self, forKey: .sourceURL)
         self.addedDate = try container.decode(Date.self, forKey: .addedDate)
     }
     
@@ -34,7 +34,7 @@ public struct Article: Codable, Identifiable {
         try container.encode(self.content, forKey: .content)
         try container.encode(self.author, forKey: .author)
         try container.encode(self.publishedDate, forKey: .publishedDate)
-        try container.encode(self.sourceURL, forKey: .sourceURL)
+        try container.encodeIfPresent(self.sourceURL, forKey: .sourceURL)
         try container.encode(self.addedDate, forKey: .addedDate)
     }
     
@@ -44,7 +44,7 @@ public struct Article: Codable, Identifiable {
         content: String,
         author: String,
         publishedDate: Date,
-        sourceURL: URL,
+        sourceURL: URL?,
         addedDate: Date
     ) {
         self.id = id
