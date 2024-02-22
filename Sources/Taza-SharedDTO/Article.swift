@@ -1,6 +1,7 @@
 import Foundation
 
-public struct Article: Codable {
+public struct Article: Codable, Identifiable {
+    public let id: UUID
     public let title: String
     public let content: String
     public let author: String
@@ -9,7 +10,7 @@ public struct Article: Codable {
     public let addedDate: Date
     
     public enum CodingKeys: String, CodingKey {
-        case title, content, author
+        case id, title, content, author
         case publishedDate = "published_date"
         case sourceURL = "source_url"
         case addedDate = "added_date"
@@ -17,6 +18,7 @@ public struct Article: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(UUID.self, forKey: .id)
         self.title = try container.decode(String.self, forKey: .title)
         self.content = try container.decode(String.self, forKey: .content)
         self.author = try container.decode(String.self, forKey: .author)
@@ -27,6 +29,7 @@ public struct Article: Codable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.id, forKey: .id)
         try container.encode(self.title, forKey: .title)
         try container.encode(self.content, forKey: .content)
         try container.encode(self.author, forKey: .author)
@@ -36,6 +39,7 @@ public struct Article: Codable {
     }
     
     public init(
+        id: UUID,
         title: String,
         content: String,
         author: String,
@@ -43,6 +47,7 @@ public struct Article: Codable {
         sourceURL: URL,
         addedDate: Date
     ) {
+        self.id = id
         self.title = title
         self.content = content
         self.author = author
