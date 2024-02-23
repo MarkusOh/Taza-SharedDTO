@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ArticlesAddedResponse: Codable {
+public struct ArticlesAddedResponseDTO: Codable {
     public let countOfAddedArticles: Int
     public let countOfTotalArticles: Int
     
